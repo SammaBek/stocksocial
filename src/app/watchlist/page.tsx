@@ -1,12 +1,10 @@
 import { auth } from "@/lib/auth";
-import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getQuote } from "@/lib/alphaVantage";
 import WatchlistClient from "@/components/WatchlistClient";
 
 export default async function WatchlistPage() {
-  const session = await auth();
-  if (!session) redirect("/auth/login");
+  const session = (await auth())!;
 
   const items = await prisma.watchlistItem.findMany({
     where: { userId: session.user.id },

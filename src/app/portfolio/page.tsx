@@ -1,12 +1,10 @@
 import { auth } from "@/lib/auth";
-import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getQuote } from "@/lib/alphaVantage";
 import PortfolioClient from "@/components/PortfolioClient";
 
 export default async function PortfolioPage() {
-  const session = await auth();
-  if (!session) redirect("/auth/login");
+  const session = (await auth())!;
 
   const items = await prisma.portfolioItem.findMany({
     where: { userId: session.user.id },
