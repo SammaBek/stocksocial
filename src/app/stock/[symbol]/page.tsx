@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import NewsCard from "@/components/NewsCard";
 import StockActions from "@/components/StockActions";
 import ChatRoom from "@/components/ChatRoom";
+import { getMockNewsForSymbol } from "@/lib/mockNews";
 
 export default async function StockPage({ params }: { params: Promise<{ symbol: string }> }) {
   const { symbol } = await params;
@@ -19,7 +20,8 @@ export default async function StockPage({ params }: { params: Promise<{ symbol: 
 
   const q = quote.status === "fulfilled" ? quote.value : null;
   const history = timeSeries.status === "fulfilled" ? timeSeries.value : {};
-  const articles = news.status === "fulfilled" ? news.value.slice(0, 6) : [];
+  const rawArticles = news.status === "fulfilled" ? news.value.slice(0, 6) : [];
+  const articles = rawArticles.length > 0 ? rawArticles : getMockNewsForSymbol(upperSymbol);
 
   const price = q?.["05. price"];
   const change = q?.["09. change"];
@@ -104,7 +106,7 @@ export default async function StockPage({ params }: { params: Promise<{ symbol: 
           <div className="space-y-3">
             {articles.map((article: Record<string, string>, i: number) => (
               <NewsCard
-                key={article.url ?? i}
+                key={`${article.url}-${i}`}
                 article={{
                   title: article.title,
                   url: article.url,

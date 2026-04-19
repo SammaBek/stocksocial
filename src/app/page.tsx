@@ -2,6 +2,7 @@ import SearchBar from "@/components/SearchBar";
 import StockCard from "@/components/StockCard";
 import NewsCard from "@/components/NewsCard";
 import { getQuote, getNews } from "@/lib/alphaVantage";
+import { getMockMarketNews } from "@/lib/mockNews";
 
 const POPULAR_STOCKS = ["AAPL", "MSFT", "GOOGL", "AMZN", "NVDA", "TSLA"];
 
@@ -21,7 +22,8 @@ export default async function HomePage() {
   const [stocks, news] = await Promise.allSettled([getPopularStocks(), getNews("AAPL,MSFT,GOOGL")]);
 
   const popularStocks = stocks.status === "fulfilled" ? stocks.value : [];
-  const newsArticles = news.status === "fulfilled" ? news.value.slice(0, 8) : [];
+  const rawNews = news.status === "fulfilled" ? news.value.slice(0, 8) : [];
+  const newsArticles = rawNews.length > 0 ? rawNews : getMockMarketNews();
 
   return (
     <div className="space-y-10">
@@ -57,7 +59,7 @@ export default async function HomePage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {newsArticles.map((article: Record<string, string>, i: number) => (
             <NewsCard
-              key={article.url ?? i}
+              key={`${article.url}-${i}`}
               breaking={i === 0}
               article={{
                 title: article.title,
