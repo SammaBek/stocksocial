@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import AccentPicker from "@/components/AccentPicker";
@@ -20,6 +21,7 @@ export default function Navbar() {
     <nav className="bg-gray-900 border-b border-gray-800 px-4 py-3">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
+          <Image src="/logo.svg" alt="StockSocial" width={32} height={32} />
           <span className="text-emerald-400 font-bold text-xl">StockSocial</span>
         </Link>
 
