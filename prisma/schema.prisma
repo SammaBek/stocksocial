@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String          @id @default(cuid())
+  name      String?
+  email     String          @unique
+  password  String
+  createdAt DateTime        @default(now())
+  watchlist WatchlistItem[]
+  portfolio PortfolioItem[]
+  messages  Message[]
+  chatRooms ChatRoomUser[]
+}
+
+model WatchlistItem {
+  id      String   @id @default(cuid())
+  symbol  String
+  addedAt DateTime @default(now())
+  userId  String
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, symbol])
+}
+
+model PortfolioItem {
+  id       String   @id @default(cuid())
+  symbol   String
+  quantity Float
+  buyPrice Float
+  addedAt  DateTime @default(now())
+  userId   String
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, symbol])
+}
+
+model ChatRoom {
+  id        String         @id @default(cuid())
+  name      String
+  symbol    String?
+  createdAt DateTime       @default(now())
+  messages  Message[]
+  members   ChatRoomUser[]
+}
+
+model ChatRoomUser {
+  userId     String
+  chatRoomId String
+  joinedAt   DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chatRoom   ChatRoom @relation(fields: [chatRoomId], references: [id], onDelete: Cascade)
+
+  @@id([userId, chatRoomId])
+}
+
+model Message {
+  id         String   @id @default(cuid())
+  content    String
+  imageUrl   String?
+  linkUrl    String?
+  createdAt  DateTime @default(now())
+  userId     String
+  chatRoomId String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chatRoom   ChatRoom @relation(fields: [chatRoomId], references: [id], onDelete: Cascade)
+}

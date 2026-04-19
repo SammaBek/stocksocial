@@ -24,3 +24,38 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+html[data-accent="blue"] {
+  --color-emerald-400: var(--color-blue-400);
+  --color-emerald-500: var(--color-blue-500);
+  --color-emerald-600: var(--color-blue-600);
+  --color-emerald-700: var(--color-blue-700);
+}
+
+html[data-accent="violet"] {
+  --color-emerald-400: var(--color-violet-400);
+  --color-emerald-500: var(--color-violet-500);
+  --color-emerald-600: var(--color-violet-600);
+  --color-emerald-700: var(--color-violet-700);
+}
+
+html[data-accent="rose"] {
+  --color-emerald-400: var(--color-rose-400);
+  --color-emerald-500: var(--color-rose-500);
+  --color-emerald-600: var(--color-rose-600);
+  --color-emerald-700: var(--color-rose-700);
+}
+
+html[data-accent="amber"] {
+  --color-emerald-400: var(--color-amber-400);
+  --color-emerald-500: var(--color-amber-500);
+  --color-emerald-600: var(--color-amber-600);
+  --color-emerald-700: var(--color-amber-700);
+}
+
+html[data-accent="cyan"] {
+  --color-emerald-400: var(--color-cyan-400);
+  --color-emerald-500: var(--color-cyan-500);
+  --color-emerald-600: var(--color-cyan-600);
+  --color-emerald-700: var(--color-cyan-700);
+}
